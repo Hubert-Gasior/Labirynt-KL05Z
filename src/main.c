@@ -3,7 +3,6 @@
 #include "pit.h"
 #include "TPM.h"
 #include "frdm_bsp.h"
-#include "lcd1602.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -21,7 +20,7 @@ volatile uint16_t cnvx = 0x3D4;
 void ADC0_IRQHandler()
 {
     static uint8_t current_channel = 8;
-		static float filtered_x = 0;        
+    static float filtered_x = 0;        
     static float filtered_y = 0;
     uint16_t dir = ADC0->R[0];         // Odczyt danych i skasowanie flagi COCO
     
@@ -45,9 +44,6 @@ void ADC0_IRQHandler()
 int main (void)
 {
 	uint8_t	kal_error;
-	char display[]={0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20};
-	LCD1602_Init();		 // Inicjalizacja wyświetlacza LCD
-	LCD1602_Backlight(TRUE);
 	PWM_Init();
 	
 	kal_error=ADC_Init();		// Inicjalizacja i kalibracja przetwornika A/C
@@ -66,22 +62,14 @@ int main (void)
 		
 		if(wynik_ok_x)
 		{
-			wynik_x = 900 + (wynik_x/4000)*300;		// Dostosowanie wyniku do zakresu napięciowego
+			wynik_x = 900 + (wynik_x/4000)*300;		
 			cnvx = wynik_x;
-			sprintf(display,"X=%.4f",wynik_x);
-			LCD1602_SetCursor(0,0);
-			LCD1602_Print(display);
 			wynik_ok_x=0;
 		}
 		
 		if(wynik_ok_y)
 		{
-			wynik_y = 900 + (wynik_y/4000)*150;		//360 Dostosowanie wyniku do zakresu (góra 384 = 900 srodek 410 = 1040 dół 4c4 = 1220 lewo 384 = 900 prawo 424 = 1060 stop 3d4 = 980)
-			//wynik_y = 900 + (wynik_y/4000)*300;  //2x180
-			cnvy = wynik_y;
-			sprintf(display,"Y=%.4f",wynik_y);
-			LCD1602_SetCursor(0,1);
-			LCD1602_Print(display);
+			wynik_y = 900 + (wynik_y/4000)*150;		
 			wynik_ok_y=0;
 		}
 	}
