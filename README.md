@@ -1,6 +1,6 @@
 # Gra zręcznościowa "Labirynt" na mikrokontrolerze KL05Z
 
-Autorzy: HUbert Gąsior, Krystian R
+Autorzy: Hubert Gąsior, Krystian R
 
 ## Spis treści
 1. [Opis projektu](#opis-projektu)
